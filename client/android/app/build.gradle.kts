@@ -14,6 +14,13 @@ fun getBackendUsername(): String {
 fun getBackendPassword(): String {
     return property("SAMPLE_PP_BACKEND_PASSWORD") as? String ?: ""
 }
+fun getUsesClearTextTraffic(): String {
+    return if (hasProperty("SAMPLE_PP_BACKEND_USES_CLEAR_TEXT_TRAFFIC")) {
+        property("SAMPLE_PP_BACKEND_USES_CLEAR_TEXT_TRAFFIC") as? String ?: "false"
+    } else {
+        "false"
+    }
+}
 fun getSigningKeystore(): String {
     return property("SIGNING_KEYSTORE") as? String ?: ""
 }
@@ -30,7 +37,7 @@ val packageName = "com.stripe.android.pushprovisioning"
 
 android {
     namespace = packageName
-    compileSdk = 33
+    compileSdk = 34
 
     signingConfigs {
         getByName("debug") {
@@ -43,7 +50,7 @@ android {
 
     defaultConfig {
         applicationId = packageName
-        minSdk = 21
+        minSdk = 23
         //noinspection OldTargetApi
         targetSdk = 33
         versionCode = 1
@@ -56,6 +63,7 @@ android {
                 "BACKEND_URL" to getBackendUrl(),
                 "BACKEND_USERNAME" to getBackendUsername(),
                 "BACKEND_PASSWORD" to getBackendPassword(),
+                "USES_CLEAR_TEXT_TRAFFIC" to getUsesClearTextTraffic(),
             )
         )
     }
